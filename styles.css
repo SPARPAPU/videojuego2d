@@ -1,0 +1,561 @@
+
+:root {
+    --bg: #10131b;
+    --panel: #171c27;
+    --border: #343d4c;
+    --text: #e8eaf0;
+    --muted: #a5adbb;
+    --orange: #ff873b;
+    --red: #bd3540;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    min-height: 100%;
+    background: var(--bg);
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    color: var(--text);
+    background: radial-gradient(ellipse at top, #202638 0%, #10131b 58%, #090b10 100%);
+    font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+
+[hidden] {
+    display: none !important;
+}
+
+/* ENCABEZADO: se conserva el diseño original */
+.hero {
+    position: relative;
+    min-height: 270px;
+    display: grid;
+    place-items: center;
+    overflow: hidden;
+    border-bottom: 1px solid #4a3b3b;
+    background: #171923 url("assets/cementerio-nocturno.jpg") center 46% / cover no-repeat;
+}
+
+.hero-shade {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, #090b12e8, #090b1280, #090b12e8);
+}
+
+.hero-content {
+    position: relative;
+    z-index: 1;
+    padding: 32px 16px;
+}
+
+.eyebrow {
+    color: #d99875;
+    font-size: 10px;
+    letter-spacing: 3px;
+    margin-bottom: 8px;
+}
+
+.hero h1 {
+    margin: 0;
+    color: #f2e8dc;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: clamp(46px, 8vw, 82px);
+    font-weight: 800;
+    letter-spacing: 7px;
+    text-shadow: 0 4px 22px #000, 0 0 20px #e66a3855;
+}
+
+.hero h1 span {
+    color: #d15c42;
+}
+
+.subtitle {
+    margin: 0;
+    color: #e2b49a;
+    font: italic 22px Georgia, serif;
+}
+
+.tagline {
+    margin: 14px 0 0;
+    color: #e0e0e6;
+    font-size: 12px;
+    letter-spacing: 1px;
+}
+
+/* MARCADOR */
+.hud-card {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    height: 100%;
+    padding: 15px 17px;
+    background: linear-gradient(145deg, #1a202d, #111620);
+    border: 1px solid var(--border);
+    border-radius: 7px;
+    box-shadow: 0 5px 15px #0002;
+}
+
+.hud-card small {
+    color: #9da8b8;
+    font-size: 9px;
+    letter-spacing: 1.5px;
+}
+
+.hud-card strong {
+    color: #f0e1d1;
+    font-size: 25px;
+    line-height: 1.1;
+    overflow-wrap: anywhere;
+}
+
+/* MARCO DEL JUEGO */
+.game-frame {
+    overflow: hidden;
+    border: 1px solid #3a4352;
+    border-radius: 8px;
+    background: #0b1017;
+    box-shadow: 0 15px 38px #0004;
+}
+
+.game-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+    min-height: 53px;
+    padding: 10px 15px;
+    background: #171d28;
+    border-bottom: 1px solid var(--border);
+    color: #d9dce4;
+    font-size: 11px;
+    letter-spacing: 1.2px;
+}
+
+.live-dot {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    margin-right: 7px;
+    border-radius: 50%;
+    background: #f17b54;
+    box-shadow: 0 0 10px #f17b54;
+}
+
+.toolbar-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+}
+
+.toolbar-actions .btn {
+    font-size: 11px;
+}
+
+/* ESCENARIO CANVAS */
+.canvas-wrap {
+    position: relative;
+    isolation: isolate;
+    height: clamp(370px, 55vw, 640px);
+    min-height: 350px;
+    overflow: hidden;
+    background: #101722;
+}
+
+#game {
+    position: absolute;
+    inset: 0;
+    display: block;
+    width: 100%;
+    height: 100%;
+    cursor: none;
+    touch-action: manipulation;
+}
+
+.start-hint {
+    position: absolute;
+    inset: 0;
+    z-index: 3;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    text-align: center;
+    background: #060910c9;
+    backdrop-filter: blur(3px);
+}
+
+.hint-symbol {
+    color: var(--orange);
+    font-size: 40px;
+    text-shadow: 0 0 18px #ff873b99;
+}
+
+.start-hint h2 {
+    margin: 8px 0;
+    color: #f1e5d7;
+    font: 30px Georgia, serif;
+}
+
+.start-hint p {
+    max-width: 490px;
+    color: #c1c8d3;
+    font-size: 13px;
+    line-height: 1.7;
+}
+
+.hint-rules {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 9px;
+    margin: 8px 0 20px;
+}
+
+.hint-rules span {
+    padding: 7px 10px;
+    border: 1px solid #394453;
+    border-radius: 4px;
+    background: #101722;
+    color: #e1d9d2;
+    font-size: 11px;
+}
+
+/* MENSAJES TEMPORALES */
+.game-toast {
+    position: absolute;
+    z-index: 5;
+    top: 16px;
+    left: 50%;
+    max-width: 90%;
+    padding: 9px 14px;
+    transform: translateX(-50%);
+    opacity: 0;
+    pointer-events: none;
+    color: #ffd0a3;
+    background: #17131bea;
+    border: 1px solid #b96b3f;
+    border-radius: 5px;
+    font-size: 11px;
+    letter-spacing: .5px;
+    text-align: center;
+    transition: opacity .15s ease;
+}
+
+.game-toast.show {
+    opacity: 1;
+}
+
+/* GAME OVER: solo cubre el escenario */
+.game-over-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 8;
+    display: grid;
+    place-items: center;
+    overflow: auto;
+    padding: 20px;
+    background: #05060bdc;
+    backdrop-filter: blur(5px);
+}
+
+.game-over-card {
+    width: min(100%, 440px);
+    padding: 28px 22px;
+    text-align: center;
+    border: 1px solid #91433a;
+    border-radius: 8px;
+    background: linear-gradient(160deg, #281a20, #0e1118);
+    box-shadow: 0 0 36px #bd354033;
+}
+
+.game-over-card h2 {
+    margin: 12px 0;
+    color: #f4dfcf;
+    font: 800 clamp(32px, 6vw, 48px) Georgia, serif;
+    letter-spacing: 2px;
+    text-shadow: 0 0 18px #d2473988;
+}
+
+.game-over-card > p:not(.eyebrow) {
+    color: #c5c3cc;
+    line-height: 1.6;
+}
+
+.final-score {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin: 20px 0;
+    color: #b9b8c2;
+    font-size: 10px;
+    letter-spacing: 1.5px;
+}
+
+.final-score strong {
+    color: #ffbd8d;
+    font-size: 36px;
+}
+
+/* MUNICIÓN Y VIDAS */
+.combat-hud {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 190px;
+    gap: 20px;
+    padding: 17px 22px;
+    background: #111720;
+    border-top: 1px solid #353d4b;
+}
+
+.ammo-panel {
+    min-width: 0;
+}
+
+.combat-heading {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 11px;
+    color: #e6d8c8;
+    font-size: 11px;
+    letter-spacing: 1.5px;
+}
+
+.combat-heading strong {
+    color: #ffb078;
+}
+
+.ammo-icons {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 9px;
+    min-height: 52px;
+    padding: 8px 12px;
+    background: #080c12;
+    border: 1px solid #343e4d;
+    border-radius: 5px;
+}
+
+.ammo-round {
+    width: 18px;
+    height: 36px;
+    object-fit: contain;
+    opacity: 1;
+    transition: opacity .18s, filter .18s;
+}
+
+.ammo-round.spent {
+    opacity: .2;
+    filter: grayscale(1) brightness(.65);
+}
+
+.ammo-message {
+    min-height: 14px;
+    margin: 9px 0 0;
+    color: #83c8a0;
+    font-size: 10px;
+    letter-spacing: 1.1px;
+}
+
+.ammo-message.reloading {
+    color: #ffad70;
+}
+
+.lives-panel {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+    padding-left: 18px;
+    border-left: 1px solid #353b49;
+}
+
+.combat-label,
+.lives-caption {
+    color: #aeb7c5;
+    font-size: 10px;
+    letter-spacing: 1.5px;
+}
+
+.lives-display {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.life-heart {
+    width: 44px;
+    height: 44px;
+    object-fit: contain;
+}
+
+#lives-count {
+    color: #ff7777;
+    font-size: 32px;
+    font-weight: 800;
+}
+
+/* INSTRUCCIONES */
+.instructions {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: 12px;
+    padding: 17px 19px;
+    border: 1px solid #394251;
+    border-radius: 7px;
+    background: #171d27;
+}
+
+.instruction-icon {
+    color: #e8a174;
+    font-size: 23px;
+}
+
+.instructions strong {
+    color: #edc2a3;
+    font-size: 11px;
+    letter-spacing: 1.5px;
+}
+
+.instructions p {
+    margin: 7px 0 0;
+    color: #c0c7d2;
+    font-size: 12px;
+    line-height: 1.75;
+}
+
+.monster-key {
+    grid-column: 2;
+    color: #9da8b8;
+    font-size: 11px;
+    line-height: 1.7;
+}
+
+.monster-key span {
+    color: var(--orange);
+}
+
+/* DOCUMENTACIÓN */
+.info-panel {
+    padding: 21px;
+    border: 1px solid #343d4b;
+    border-radius: 7px;
+    background: linear-gradient(145deg, #171d28, #111620);
+}
+
+.info-panel h2 {
+    margin: 0 0 15px;
+    color: #e5a17d;
+    font: bold 13px Georgia, serif;
+    letter-spacing: 2px;
+}
+
+.info-panel p,
+.info-panel li {
+    color: #bdc5d0;
+    font-size: 12px;
+    line-height: 1.8;
+}
+
+.info-panel ul {
+    padding-left: 19px;
+    margin-bottom: 0;
+}
+
+/* CRÉDITOS */
+footer {
+    color: #c2c7d0;
+}
+
+.footer-rule {
+    width: min(250px, 60%);
+    height: 1px;
+    margin: 0 auto 22px;
+    background: linear-gradient(90deg, transparent, #8b5949, transparent);
+}
+
+.footer-title {
+    color: #e4b093;
+    font-size: 11px;
+    letter-spacing: 1.5px;
+    line-height: 1.8;
+}
+
+.small-muted {
+    color: #8f99a8;
+    font-size: 11px;
+}
+
+/* PANTALLAS PEQUEÑAS */
+@media (max-width: 576px) {
+    .hero {
+        min-height: 235px;
+    }
+
+    .hero h1 {
+        letter-spacing: 4px;
+    }
+
+    .subtitle {
+        font-size: 18px;
+    }
+
+    .tagline {
+        max-width: 310px;
+        margin-inline: auto;
+        line-height: 1.6;
+    }
+
+    .game-toolbar {
+        align-items: flex-start;
+    }
+
+    .toolbar-actions {
+        width: 100%;
+    }
+
+    .canvas-wrap {
+        height: 105vw;
+        min-height: 360px;
+    }
+
+    .combat-hud {
+        grid-template-columns: minmax(0, 1fr);
+        padding: 14px;
+        gap: 13px;
+    }
+
+    .lives-panel {
+        flex-direction: row;
+        justify-content: space-between;
+        padding: 12px 0 0;
+        border-left: 0;
+        border-top: 1px solid #353b49;
+    }
+
+    .ammo-round {
+        width: 15px;
+        height: 32px;
+    }
+
+    .instructions {
+        grid-template-columns: auto minmax(0, 1fr);
+        padding: 13px;
+    }
+
+    .monster-key {
+        grid-column: 1 / -1;
+    }
+
+    .game-over-card {
+        padding: 22px 16px;
+    }
+}
